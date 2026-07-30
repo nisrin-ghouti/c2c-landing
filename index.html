@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>C2C – Connect to Collect</title>
+  <meta name="description" id="metaDesc"
+    content="Your campus, connected. Meet students, join events, earn points, and unlock exclusive benefits." />
+  <link rel="icon" href="logo.png" />
+  <meta property="og:title" content="C2C – Connect to Collect" />
+  <meta property="og:description" content="Your campus, connected." />
+  <meta property="og:image" content="logo.png" />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#6D3FBF" />
+  <style>
+    :root{
+      --purple:#6D3FBF; --purple-2:#8B5CF6; --lav:#EDE4FB; --lav-2:#F6F1FE;
+      --sky:#5FA8E6; --mint:#3FBE93; --peach:#F0925B; --pink:#E4699A; --gold:#E7A93A;
+      --bg:#FAF8FE; --surface:#FFFFFF; --text:#1E1630; --muted:#6C6382; --border:#ECE4F7;
+      --ring:rgba(109,63,191,.18);
+      --shadow-sm:0 1px 2px rgba(40,20,70,.05), 0 4px 14px rgba(40,20,70,.05);
+      --shadow-lg:0 10px 40px rgba(90,50,160,.14);
+      --radius:20px;
+      --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans","Noto Sans Arabic","Noto Sans Hebrew",Arial,sans-serif;
+      --maxw:1120px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:var(--sans); background:var(--bg); color:var(--text);
+      line-height:1.6; -webkit-font-smoothing:antialiased; text-align:start;
+      overflow-x:hidden;
+    }
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:22px}
+    .btn{display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:15px;
+      padding:13px 22px;border-radius:999px;cursor:pointer;border:1.5px solid transparent;
+      transition:transform .15s ease, box-shadow .15s ease, background .15s ease;white-space:nowrap}
+    .btn:active{transform:translateY(1px)}
+    .btn-primary{background:linear-gradient(135deg,var(--purple),var(--purple-2));color:#fff;
+      box-shadow:0 8px 24px var(--ring)}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 30px var(--ring)}
+    .btn-ghost{background:var(--surface);border-color:var(--border);color:var(--text)}
+    .btn-ghost:hover{border-color:var(--purple);color:var(--purple)}
+    .btn-play{background:#140f22;color:#fff}
+    .btn-play:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+    .btn-play small{display:block;font-size:10px;font-weight:600;opacity:.75;line-height:1;margin-bottom:2px}
+    .btn-play b{font-size:16px;line-height:1;font-weight:800}
+    .btn-play .txt{text-align:start}
+
+    /* Header */
+    header{position:sticky;top:0;z-index:50;
+      background:rgba(250,248,254,.82);backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border)}
+    .nav{display:flex;align-items:center;gap:18px;height:66px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;letter-spacing:-.02em}
+    .brand img{height:30px;width:auto;display:block}
+    .nav-links{display:flex;gap:26px;margin-inline-start:22px}
+    .nav-links a{font-weight:600;font-size:14.5px;color:var(--muted)}
+    .nav-links a:hover{color:var(--purple)}
+    .spacer{flex:1}
+    .langs{display:flex;background:var(--lav);border-radius:999px;padding:3px;gap:2px}
+    .langs button{border:0;background:transparent;font-family:var(--sans);font-weight:700;font-size:13px;
+      color:var(--muted);padding:6px 11px;border-radius:999px;cursor:pointer}
+    .langs button[aria-pressed="true"]{background:#fff;color:var(--purple);box-shadow:var(--shadow-sm)}
+    .hide-mobile{display:inline-flex}
+
+    /* Hero */
+    .hero{position:relative;padding:72px 0 84px;overflow:hidden}
+    .hero::before{content:"";position:absolute;inset-inline-start:-14%;top:-30%;width:60%;height:120%;
+      background:radial-gradient(closest-side,rgba(139,92,246,.28),transparent);filter:blur(10px);z-index:0}
+    .hero::after{content:"";position:absolute;inset-inline-end:-10%;bottom:-40%;width:55%;height:120%;
+      background:radial-gradient(closest-side,rgba(95,168,230,.25),transparent);z-index:0}
+    .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);
+      color:var(--purple);font-weight:700;font-size:13px;padding:7px 14px;border-radius:999px;box-shadow:var(--shadow-sm)}
+    .eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--mint)}
+    h1{font-size:clamp(34px,5.2vw,56px);line-height:1.05;letter-spacing:-.03em;margin:18px 0 16px;font-weight:850}
+    .grad{background:linear-gradient(120deg,var(--purple),var(--pink) 60%,var(--sky));
+      -webkit-background-clip:text;background-clip:text;color:transparent}
+    .lead{font-size:18px;color:var(--muted);max-width:46ch;margin:0 0 28px}
+    .cta-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+    .langline{margin-top:22px;font-size:13.5px;color:var(--muted);font-weight:600}
+
+    /* Hero visual */
+    .visual{position:relative;display:flex;justify-content:center}
+    .panel{position:relative;width:100%;max-width:380px;aspect-ratio:1/1.02;border-radius:34px;
+      background:linear-gradient(150deg,#7b52d6,#9a6fe0 45%,#6aa6e6);
+      box-shadow:var(--shadow-lg);display:flex;align-items:center;justify-content:center}
+    .panel .logo-badge{background:rgba(255,255,255,.96);border-radius:26px;padding:26px 30px;box-shadow:0 12px 34px rgba(30,10,60,.22)}
+    .panel .logo-badge img{width:190px;max-width:52vw;display:block}
+    .chip{position:absolute;background:rgba(255,255,255,.97);border-radius:16px;padding:11px 14px;
+      box-shadow:0 10px 26px rgba(30,10,60,.18);display:flex;align-items:center;gap:9px;font-weight:800;font-size:13px}
+    .chip .ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;color:#fff}
+    .chip small{display:block;font-weight:600;color:var(--muted);font-size:10.5px;line-height:1}
+    .chip b{font-size:14px;line-height:1.05}
+    .c1{inset-inline-start:-18px;top:22%}
+    .c2{inset-inline-end:-14px;top:44%}
+    .c3{inset-inline-start:6%;bottom:-16px}
+    @media (prefers-reduced-motion:no-preference){
+      .chip{animation:float 5s ease-in-out infinite}
+      .c2{animation-delay:.9s}.c3{animation-delay:1.7s}
+      @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+    }
+
+    /* Sections */
+    section{padding:74px 0}
+    .sec-head{text-align:center;max-width:640px;margin:0 auto 46px}
+    .sec-head h2{font-size:clamp(26px,3.6vw,38px);letter-spacing:-.025em;margin:0 0 12px;font-weight:850}
+    .sec-head p{color:var(--muted);font-size:17px;margin:0}
+    .kicker{color:var(--purple);font-weight:800;font-size:13px;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:10px}
+
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+      padding:26px 24px;box-shadow:var(--shadow-sm);transition:transform .18s ease, box-shadow .18s ease}
+    .card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
+    .card .ic{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;color:#fff;margin-bottom:16px}
+    .card h3{margin:0 0 8px;font-size:18.5px;letter-spacing:-.01em}
+    .card p{margin:0;color:var(--muted);font-size:15px}
+    .ic svg{width:26px;height:26px}
+
+    /* Steps */
+    .steps-wrap{background:linear-gradient(180deg,var(--lav-2),#fff);border-block:1px solid var(--border)}
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;counter-reset:step}
+    .step{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;position:relative;box-shadow:var(--shadow-sm)}
+    .step .num{width:44px;height:44px;border-radius:13px;background:linear-gradient(135deg,var(--purple),var(--purple-2));
+      color:#fff;font-weight:850;font-size:19px;display:grid;place-items:center;margin-bottom:16px}
+    .step h3{margin:0 0 8px;font-size:19px}
+    .step p{margin:0;color:var(--muted);font-size:15px}
+
+    /* CTA band */
+    .cta{position:relative;overflow:hidden;background:linear-gradient(135deg,#6a3fbf,#8b5cf6 55%,#5fa8e6);
+      border-radius:30px;padding:56px 40px;text-align:center;color:#fff;box-shadow:var(--shadow-lg)}
+    .cta h2{font-size:clamp(26px,3.6vw,38px);margin:0 0 10px;letter-spacing:-.025em}
+    .cta p{margin:0 0 26px;font-size:17px;opacity:.92}
+    .cta .btn-play{background:#140f22}
+
+    /* Footer */
+    footer{padding:44px 0 40px;border-top:1px solid var(--border);margin-top:60px}
+    .foot{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+    .foot .brand img{height:26px}
+    .foot .tag{color:var(--muted);font-size:14px}
+    .foot-links{display:flex;gap:22px;margin-inline-start:auto;flex-wrap:wrap}
+    .foot-links a{color:var(--muted);font-weight:600;font-size:14px}
+    .foot-links a:hover{color:var(--purple)}
+    .copy{color:var(--muted);font-size:13px;margin-top:18px}
+
+    /* Reveal */
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease}
+    .reveal.in{opacity:1;transform:none}
+    @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+    @media (max-width:900px){
+      .hero-grid{grid-template-columns:1fr;gap:40px}
+      .visual{order:-1}
+      .features,.steps{grid-template-columns:1fr 1fr}
+      .nav-links{display:none}
+    }
+    @media (max-width:620px){
+      .features,.steps{grid-template-columns:1fr}
+      .hide-mobile{display:none}
+      .hero{padding:48px 0 60px}
+      .foot-links{margin-inline-start:0;width:100%}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="#top"><img src="logo.png" alt="C2C" /></a>
+      <nav class="nav-links">
+        <a href="#features" data-i18n="nav.features">Features</a>
+        <a href="#how" data-i18n="nav.how">How it works</a>
+      </nav>
+      <span class="spacer"></span>
+      <div class="langs" role="group" aria-label="Language">
+        <button data-lang="en" aria-pressed="true">EN</button>
+        <button data-lang="ar" aria-pressed="false">ع</button>
+        <button data-lang="he" aria-pressed="false">עב</button>
+      </div>
+      <a class="btn btn-primary hide-mobile" href="#download" data-i18n="nav.download">Get the app</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <div class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow"><span class="dot"></span><span data-i18n="hero.badge">Your campus, connected</span></span>
+          <h1><span class="grad" data-i18n="hero.title">Connect. Participate. Collect.</span></h1>
+          <p class="lead" data-i18n="hero.subtitle">Meet fellow students, discover campus events, and turn your participation into points you can redeem for exclusive benefits.</p>
+          <div class="cta-row">
+            <!-- Replace href="#" with your Google Play link once published -->
+            <a class="btn btn-play" id="playBtn" href="#" aria-label="Get it on Google Play">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.6 2.2 13 12 3.6 21.8a1 1 0 0 1-.6-.9V3.1a1 1 0 0 1 .6-.9Z" fill="#34D399"/><path d="M14.3 10.7 16.9 8l3.6 2a1 1 0 0 1 0 1.8l-3.6 2-2.6-2.7Z" fill="#FBBF24"/><path d="M3.6 2.2 14.3 10.7 16.9 8 5.2 1.4a1 1 0 0 0-1.6.8Z" fill="#60A5FA"/><path d="M3.6 21.8 14.3 13.3 16.9 16 5.2 22.6a1 1 0 0 1-1.6-.8Z" fill="#F87171"/></svg>
+              <span class="txt"><small data-i18n="cta.getOn">GET IT ON</small><b>Google Play</b></span>
+            </a>
+            <a class="btn btn-ghost" href="#features" data-i18n="hero.ctaSecondary">Explore features</a>
+          </div>
+          <div class="langline" data-i18n="hero.langline">Available in English · العربية · עברית</div>
+        </div>
+
+        <div class="visual">
+          <div class="panel">
+            <div class="logo-badge"><img src="logo.png" alt="C2C – Connect to Collect" /></div>
+            <div class="chip c1"><span class="ic" style="background:var(--gold)">★</span><span><small data-i18n="chip.points">Points</small><b>+25</b></span></div>
+            <div class="chip c2"><span class="ic" style="background:var(--sky)">◎</span><span><small data-i18n="chip.events">Events</small><b data-i18n="chip.live">Live</b></span></div>
+            <div class="chip c3"><span class="ic" style="background:var(--pink)">♛</span><span><small data-i18n="chip.rank">Rank</small><b>#1</b></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURES -->
+    <section id="features">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="kicker" data-i18n="feat.kicker">Features</span>
+          <h2 data-i18n="feat.heading">Everything your campus life needs</h2>
+          <p data-i18n="feat.sub">One app to connect, participate, and get rewarded.</p>
+        </div>
+        <div class="features">
+          <div class="card reveal">
+            <div class="ic" style="background:var(--purple)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><path d="M2 21a7 7 0 0 1 14 0"/><path d="M16 3.1a3 3 0 0 1 0 5.8"/><path d="M22 21a7 7 0 0 0-5-6.7"/></svg></div>
+            <h3 data-i18n="feat.1.t">Smart Matching</h3>
+            <p data-i18n="feat.1.d">Meet students who share your faculty, field of study, interests, and languages.</p>
+          </div>
+          <div class="card reveal">
+            <div class="ic" style="background:var(--sky)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/></svg></div>
+            <h3 data-i18n="feat.2.t">Campus Events</h3>
+            <p data-i18n="feat.2.d">Discover events and multi-session programs, register in seconds, and check in with a QR code.</p>
+          </div>
+          <div class="card reveal">
+            <div class="ic" style="background:var(--gold)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 2.9 6 6.6.6-5 4.3 1.5 6.5L12 16.9 6 19.9l1.5-6.5-5-4.3L9.1 8Z"/></svg></div>
+            <h3 data-i18n="feat.3.t">Earn Points</h3>
+            <p data-i18n="feat.3.d">Get rewarded for attending events and meeting other students.</p>
+          </div>
+          <div class="card reveal">
+            <div class="ic" style="background:var(--mint)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7"/><path d="M2 8.5 4 4h16l2 4.5V10a2 2 0 0 1-4 0 2 2 0 0 1-4 0 2 2 0 0 1-4 0 2 2 0 0 1-4 0Z"/></svg></div>
+            <h3 data-i18n="feat.4.t">Exclusive Benefits</h3>
+            <p data-i18n="feat.4.d">Redeem your points for perks from partner businesses via a personal digital card.</p>
+          </div>
+          <div class="card reveal">
+            <div class="ic" style="background:var(--pink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V9l7-5 7 5v12"/><path d="M9 21v-6h6v6"/></svg></div>
+            <h3 data-i18n="feat.5.t">Monthly Champions</h3>
+            <p data-i18n="feat.5.d">Climb the leaderboard each month and win bonus points.</p>
+          </div>
+          <div class="card reveal">
+            <div class="ic" style="background:var(--peach)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2Z"/></svg></div>
+            <h3 data-i18n="feat.6.t">Chat &amp; Meet</h3>
+            <p data-i18n="feat.6.d">Message students privately and confirm meetings with a secure QR handshake.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW -->
+    <div class="steps-wrap" id="how">
+      <section>
+        <div class="wrap">
+          <div class="sec-head reveal">
+            <span class="kicker" data-i18n="how.kicker">How it works</span>
+            <h2 data-i18n="how.heading">Get started in three steps</h2>
+          </div>
+          <div class="steps">
+            <div class="step reveal"><div class="num">1</div><h3 data-i18n="how.1.t">Sign up</h3><p data-i18n="how.1.d">Register with your university email in seconds.</p></div>
+            <div class="step reveal"><div class="num">2</div><h3 data-i18n="how.2.t">Connect</h3><p data-i18n="how.2.d">Match with students, join events, and start meeting people.</p></div>
+            <div class="step reveal"><div class="num">3</div><h3 data-i18n="how.3.t">Collect</h3><p data-i18n="how.3.d">Earn points and unlock exclusive benefits across campus.</p></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- CTA -->
+    <section id="download">
+      <div class="wrap">
+        <div class="cta reveal">
+          <h2 data-i18n="cta.title">Ready to make the most of campus life?</h2>
+          <p data-i18n="cta.sub">Join C2C and start connecting today.</p>
+          <a class="btn btn-play" href="#" aria-label="Get it on Google Play">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.6 2.2 13 12 3.6 21.8a1 1 0 0 1-.6-.9V3.1a1 1 0 0 1 .6-.9Z" fill="#34D399"/><path d="M14.3 10.7 16.9 8l3.6 2a1 1 0 0 1 0 1.8l-3.6 2-2.6-2.7Z" fill="#FBBF24"/><path d="M3.6 2.2 14.3 10.7 16.9 8 5.2 1.4a1 1 0 0 0-1.6.8Z" fill="#60A5FA"/><path d="M3.6 21.8 14.3 13.3 16.9 16 5.2 22.6a1 1 0 0 1-1.6-.8Z" fill="#F87171"/></svg>
+            <span class="txt"><small data-i18n="cta.getOn">GET IT ON</small><b>Google Play</b></span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot">
+        <a class="brand" href="#top"><img src="logo.png" alt="C2C" /></a>
+        <span class="tag" data-i18n="footer.tagline">Your campus, connected.</span>
+        <div class="foot-links">
+          <a href="privacy.html" data-i18n="footer.privacy">Privacy Policy</a>
+          <a href="mailto:support@c2c-connect2collect.com" data-i18n="footer.contact">Contact</a>
+        </div>
+      </div>
+      <div class="copy">© <span id="year"></span> C2C — Connect to Collect. <span data-i18n="footer.rights">All rights reserved.</span></div>
+    </div>
+  </footer>
+
+  <script>
+    const I18N = {
+      en:{
+        "meta.desc":"Your campus, connected. Meet students, join events, earn points, and unlock exclusive benefits.",
+        "nav.features":"Features","nav.how":"How it works","nav.download":"Get the app",
+        "hero.badge":"Your campus, connected","hero.title":"Connect. Participate. Collect.",
+        "hero.subtitle":"Meet fellow students, discover campus events, and turn your participation into points you can redeem for exclusive benefits.",
+        "hero.ctaSecondary":"Explore features","hero.langline":"Available in English · العربية · עברית",
+        "cta.getOn":"GET IT ON",
+        "chip.points":"Points","chip.events":"Events","chip.live":"Live","chip.rank":"Rank",
+        "feat.kicker":"Features","feat.heading":"Everything your campus life needs","feat.sub":"One app to connect, participate, and get rewarded.",
+        "feat.1.t":"Smart Matching","feat.1.d":"Meet students who share your faculty, field of study, interests, and languages.",
+        "feat.2.t":"Campus Events","feat.2.d":"Discover events and multi-session programs, register in seconds, and check in with a QR code.",
+        "feat.3.t":"Earn Points","feat.3.d":"Get rewarded for attending events and meeting other students.",
+        "feat.4.t":"Exclusive Benefits","feat.4.d":"Redeem your points for perks from partner businesses via a personal digital card.",
+        "feat.5.t":"Monthly Champions","feat.5.d":"Climb the leaderboard each month and win bonus points.",
+        "feat.6.t":"Chat & Meet","feat.6.d":"Message students privately and confirm meetings with a secure QR handshake.",
+        "how.kicker":"How it works","how.heading":"Get started in three steps",
+        "how.1.t":"Sign up","how.1.d":"Register with your university email in seconds.",
+        "how.2.t":"Connect","how.2.d":"Match with students, join events, and start meeting people.",
+        "how.3.t":"Collect","how.3.d":"Earn points and unlock exclusive benefits across campus.",
+        "cta.title":"Ready to make the most of campus life?","cta.sub":"Join C2C and start connecting today.",
+        "footer.tagline":"Your campus, connected.","footer.privacy":"Privacy Policy","footer.contact":"Contact","footer.rights":"All rights reserved."
+      },
+      ar:{
+        "meta.desc":"حرمك الجامعي، متصل. تعرّف على الطلاب، شارك في الفعاليات، اكسب النقاط، واحصل على مزايا حصرية.",
+        "nav.features":"المميزات","nav.how":"كيف يعمل","nav.download":"حمّل التطبيق",
+        "hero.badge":"حرمك الجامعي، متصل","hero.title":"تواصل. شارك. اجمع.",
+        "hero.subtitle":"تعرّف على زملائك الطلاب، واكتشف فعاليات الحرم الجامعي، وحوّل مشاركتك إلى نقاط تستبدلها بمزايا حصرية.",
+        "hero.ctaSecondary":"استكشف المميزات","hero.langline":"متوفر بالإنجليزية · العربية · العبرية",
+        "cta.getOn":"احصل عليه من",
+        "chip.points":"النقاط","chip.events":"الفعاليات","chip.live":"مباشر","chip.rank":"الترتيب",
+        "feat.kicker":"المميزات","feat.heading":"كل ما تحتاجه حياتك الجامعية","feat.sub":"تطبيق واحد للتواصل والمشاركة والحصول على المكافآت.",
+        "feat.1.t":"مطابقة ذكية","feat.1.d":"تعرّف على طلاب يشاركونك الكلية ومجال الدراسة والاهتمامات واللغات.",
+        "feat.2.t":"فعاليات الحرم الجامعي","feat.2.d":"اكتشف الفعاليات والبرامج متعددة الجلسات، وسجّل خلال ثوانٍ، وسجّل حضورك برمز QR.",
+        "feat.3.t":"اكسب النقاط","feat.3.d":"احصل على مكافآت لحضور الفعاليات ولقاء الطلاب الآخرين.",
+        "feat.4.t":"مزايا حصرية","feat.4.d":"استبدل نقاطك بعروض من الشركات الشريكة عبر بطاقة رقمية شخصية.",
+        "feat.5.t":"أبطال الشهر","feat.5.d":"تصدّر لوحة المتصدرين كل شهر واربح نقاطًا إضافية.",
+        "feat.6.t":"الدردشة واللقاء","feat.6.d":"راسل الطلاب بشكل خاص وأكّد اللقاءات عبر مسح QR آمن.",
+        "how.kicker":"كيف يعمل","how.heading":"ابدأ في ثلاث خطوات",
+        "how.1.t":"سجّل","how.1.d":"أنشئ حسابك ببريدك الجامعي خلال ثوانٍ.",
+        "how.2.t":"تواصل","how.2.d":"طابق مع الطلاب، وانضم للفعاليات، وابدأ بلقاء الناس.",
+        "how.3.t":"اجمع","how.3.d":"اكسب النقاط وافتح مزايا حصرية في جميع أنحاء الحرم الجامعي.",
+        "cta.title":"مستعد لتحقيق أقصى استفادة من حياتك الجامعية؟","cta.sub":"انضم إلى C2C وابدأ التواصل اليوم.",
+        "footer.tagline":"حرمك الجامعي، متصل.","footer.privacy":"سياسة الخصوصية","footer.contact":"اتصل بنا","footer.rights":"جميع الحقوق محفوظة."
+      },
+      he:{
+        "meta.desc":"הקמפוס שלך, מחובר. הכירו סטודנטים, הצטרפו לאירועים, צברו נקודות וקבלו הטבות בלעדיות.",
+        "nav.features":"תכונות","nav.how":"איך זה עובד","nav.download":"הורדת האפליקציה",
+        "hero.badge":"הקמפוס שלך, מחובר","hero.title":"מתחברים. משתתפים. אוספים.",
+        "hero.subtitle":"הכירו סטודנטים, גלו אירועים בקמפוס, והפכו את ההשתתפות שלכם לנקודות שאפשר לממש להטבות בלעדיות.",
+        "hero.ctaSecondary":"לתכונות","hero.langline":"זמין באנגלית · ערבית · עברית",
+        "cta.getOn":"הורידו מ־",
+        "chip.points":"נקודות","chip.events":"אירועים","chip.live":"עכשיו","chip.rank":"דירוג",
+        "feat.kicker":"תכונות","feat.heading":"כל מה שחיי הקמפוס שלכם צריכים","feat.sub":"אפליקציה אחת להתחבר, להשתתף ולקבל תגמולים.",
+        "feat.1.t":"התאמה חכמה","feat.1.d":"הכירו סטודנטים שחולקים איתכם פקולטה, תחום לימוד, תחומי עניין ושפות.",
+        "feat.2.t":"אירועים בקמפוס","feat.2.d":"גלו אירועים ותוכניות רב-מפגשיות, הירשמו בשניות ובצעו צ׳ק-אין עם קוד QR.",
+        "feat.3.t":"צברו נקודות","feat.3.d":"קבלו תגמול על השתתפות באירועים ועל מפגשים עם סטודנטים.",
+        "feat.4.t":"הטבות בלעדיות","feat.4.d":"ממשו נקודות להטבות מעסקים שותפים באמצעות כרטיס דיגיטלי אישי.",
+        "feat.5.t":"אלופי החודש","feat.5.d":"טפסו בטבלת המובילים מדי חודש וזכו בנקודות בונוס.",
+        "feat.6.t":"צ׳אט ומפגשים","feat.6.d":"שלחו הודעות פרטיות ואשרו מפגשים עם סריקת QR מאובטחת.",
+        "how.kicker":"איך זה עובד","how.heading":"מתחילים בשלושה צעדים",
+        "how.1.t":"הרשמה","how.1.d":"צרו חשבון עם המייל האוניברסיטאי שלכם בשניות.",
+        "how.2.t":"מתחברים","how.2.d":"התאימו לסטודנטים, הצטרפו לאירועים והתחילו להיפגש.",
+        "how.3.t":"אוספים","how.3.d":"צברו נקודות ופתחו הטבות בלעדיות בכל הקמפוס.",
+        "cta.title":"מוכנים להפיק את המרב מחיי הקמפוס?","cta.sub":"הצטרפו ל-C2C והתחילו להתחבר היום.",
+        "footer.tagline":"הקמפוס שלך, מחובר.","footer.privacy":"מדיניות פרטיות","footer.contact":"צור קשר","footer.rights":"כל הזכויות שמורות."
+      }
+    };
+    const RTL = {ar:true, he:true};
+
+    function applyLang(lang){
+      const dict = I18N[lang] || I18N.en;
+      document.documentElement.lang = lang;
+      document.documentElement.dir = RTL[lang] ? "rtl" : "ltr";
+      document.querySelectorAll("[data-i18n]").forEach(el=>{
+        const k = el.getAttribute("data-i18n");
+        if(dict[k] != null) el.textContent = dict[k];
+      });
+      const md = document.getElementById("metaDesc");
+      if(md && dict["meta.desc"]) md.setAttribute("content", dict["meta.desc"]);
+      document.querySelectorAll(".langs button").forEach(b=>{
+        b.setAttribute("aria-pressed", b.dataset.lang === lang ? "true" : "false");
+      });
+      try{ localStorage.setItem("c2c_lang", lang); }catch(e){}
+    }
+
+    document.querySelectorAll(".langs button").forEach(b=>{
+      b.addEventListener("click", ()=> applyLang(b.dataset.lang));
+    });
+
+    // Initial language: saved → browser → English
+    (function(){
+      let lang = "en";
+      try{ lang = localStorage.getItem("c2c_lang") || ""; }catch(e){}
+      if(!lang){
+        const n = (navigator.language || "en").slice(0,2).toLowerCase();
+        lang = (n === "ar" || n === "he") ? n : "en";
+      }
+      applyLang(lang);
+    })();
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Scroll reveal
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, {threshold:.12});
+    document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+  </script>
+</body>
+</html>
